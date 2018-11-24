@@ -84,5 +84,20 @@ public interface PowerMapper {
 	 */
 	@SelectProvider(type=PowerProvider.class,method="findByIds")
 	List<Map<String, Object>> findByIds(Object... powerIds);
-
+	/**
+	 * 模糊查询分页的的实现
+	 * 注意事项：如果多个参数，那么必须要所有的参数加上注解
+	 * @param entity
+	 * @param start
+	 * @param size
+	 * @return
+	 */
+	@SelectProvider(type = PowerProvider.class, method = "searchByConditionToPage")
+	List<Map<String, Object>> searchByConditionToPage(@Param("entity") Map<String, Object> entity,@Param("start") int start,@Param("size") int size);
+	/**
+	 * 查询所有的信息数量
+	 * @return
+	 */
+	@Select(value="SELECT count(*) FROM tb_power a JOIN tb_modular b ON a.modular_id=b.modular_id WHERE a.power_name LIKE CONCAT('%',#{search_thing},'%') OR b.modular_name LIKE CONCAT('%',#{search_thing},'%')")
+	int countBySearch(Map<String, Object> entity);
 }

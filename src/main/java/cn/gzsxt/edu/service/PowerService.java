@@ -50,5 +50,7 @@ public interface PowerService {
 	 */
 	List<Map<String, Object>> findAllPower();
 
+	Page searchPowerInfo(Map<String, Object> entity, Integer index, int pageSize);
+
 }
 

@@ -107,6 +107,44 @@ public class PowerServiceImpl implements PowerService {
 		List<Map<String, Object>> powers = powerMapper.findAll();
 		return powers;
 	}
+
+	@Override
+	public Page searchPowerInfo(Map<String, Object> entity, Integer index, int size) {
+		logger.debug("权限分页查询");
+		//1.通过条件查询记录数
+		int count = powerMapper.countBySearch(entity);
+		//2.通过条件查询数据
+		//注意：开始位置=索引*每页记录数
+		int start=index*size;
+		List<Map<String, Object>> powers = powerMapper.searchByConditionToPage(entity, start, size);
+		//3.拼接需要显示的数据
+		for (Map<String, Object> power : powers) {
+			
+			//1.显示所属模块
+			Object modularId = power.get("modular_id");
+			Map<String, Object> modular = modularMapper.findById(modularId);
+			power.put("modular", modular);
+			
+			//2.显示隐藏显示状态
+			Map<String, Object> isShow = dictionaryMapper.findByTypeCodeAndValue(power.get("power_is_show"), 1001);
+			power.put("isShow", isShow);
+			
+			//3.显示父权限
+			Object parentPowerId = power.get("power_parent");
+			if ((Long)parentPowerId==0) {
+				Map<String, Object> parent=new HashMap<>();
+				parent.put("power_name", "顶级菜单");
+				power.put("parent", parent);
+			}else {
+				Map<String, Object> parent = powerMapper.findById(parentPowerId);
+				power.put("parent", parent);
+			}
+			
+		}
+		
+		Page page=new Page(index, size, count, powers);
+		return page;
+	}
 	
 	
 

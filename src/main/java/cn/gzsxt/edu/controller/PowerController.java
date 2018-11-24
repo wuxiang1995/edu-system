@@ -188,7 +188,37 @@ public class PowerController {
 		powerService.deletePowerByIds((Object[])powerId);
 		return this.toPowerList(null, 0, request);
 	}
-	
+	@RequestMapping("/toPowerSearch")
+	public String searchPowers(@RequestParam Map<String, Object> entity,Integer index,HttpServletRequest request){
+		try {
+			if (index==null) {
+				index=0;
+			}
+			Object object = entity.get("search_thing");
+			request.setAttribute("search_thing", object);
+			Page page = powerService.searchPowerInfo(entity, index, Global.PAGE_SIZE);
+			request.setAttribute("page", page);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return "manager/powerSearch";
+	}
+	@RequestMapping("/searchPower")
+	public String searchPower(@RequestParam Map<String, Object> entity,Integer index,HttpServletRequest request){
+		try {
+			if (index==null) {
+				index=0;
+			}
+			Object thing = entity.get("search_thing");
+			request.setAttribute("search_thing", thing);
+			Page page = powerService.searchPowerInfo(entity, index, Global.PAGE_SIZE);
+			request.setAttribute("page", page);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return "manager/powerSearch";
+	}
+
 	
 
 }

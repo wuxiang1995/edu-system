@@ -168,5 +168,23 @@ public class PowerProvider {
 	
 		return builder.toString();
 	 }
+	/**
+	 * 模糊查询并且分页
+	 * 注意事项：加上注解的对象，必须需要使用@Param绑定的key来获得值
+	 * @param entity
+	 * @param start
+	 * @param size
+	 * @return
+	 */
+	public String searchByConditionToPage(@Param("entity") Map<String, Object> entity ,@Param("start") int start,@Param("size") int size) {
+		String sql="SELECT * FROM tb_power a JOIN tb_modular b ON a.modular_id=b.modular_id WHERE ";
+		StringBuilder builder=new StringBuilder(sql);
+		builder.append("a.power_name LIKE CONCAT('%',#{entity.search_thing},'%') OR b.modular_name LIKE CONCAT('%',#{entity.search_thing},'%')");
+		builder.append(" LIMIT #{start},#{size}");
+		logger.debug("权限模糊查询："+builder.toString());
+		
+		return builder.toString();
+		
+	}
 
 }

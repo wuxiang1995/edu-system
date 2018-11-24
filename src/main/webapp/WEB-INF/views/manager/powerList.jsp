@@ -37,10 +37,11 @@
 						</ul><!-- /.breadcrumb -->
 
 						<div class="nav-search" id="nav-search">
-							<form class="form-search">
+							<form class="form-search" action="${pageContext.request.contextPath }/power/toPowerSearch.do" method="post">
 								<span class="input-icon">
-									<input type="text" placeholder="Search ..." class="nav-search-input" id="nav-search-input" autocomplete="off" />
+									<input name="search_thing" type="text" placeholder="Search ..." class="nav-search-input" id="nav-search-input" autocomplete="off" />
 									<i class="ace-icon fa fa-search nav-search-icon"></i>
+									<!-- <button class="nav-search-input" type="submit" style="width: 60px;">查询</button> -->
 								</span>
 							</form>
 						</div><!-- /.nav-search -->
